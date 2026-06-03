@@ -403,6 +403,13 @@ export const achievements: Achievement[] = [
     blurb: 'Led the University of Education MLSA chapter — organizing events, workshops, and a growing developer community.',
   },
   {
+    title: 'Lead, Confiniti UE',
+    org: 'University of Education',
+    year: 'Jan 2024 — Jan 2025',
+    type: 'Leadership',
+    blurb: 'Led the Confiniti society for a year — driving tech events, workshops, competitions, and a thriving student developer community.',
+  },
+  {
     title: 'Mentor, Web Dev Bootcamp',
     org: 'Dev Weekends',
     type: 'Mentorship',
