@@ -166,6 +166,24 @@ export const experience: Experience[] = [
     ],
     stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Redux Toolkit', 'Stripe', 'Tailwind CSS'],
   },
+  {
+    company: 'Confiniti — University of Education',
+    role: 'Lead',
+    // TODO: adjust the exact months if needed (kept as a 1-year span)
+    start: 'Jan 2024',
+    end: 'Jan 2025',
+    location: 'Lahore, Pakistan',
+    mode: 'On-site',
+    summary:
+      'Led the Confiniti society at the University of Education for a year — driving tech events, workshops, and a growing student developer community.',
+    bullets: [
+      'Led and coordinated the Confiniti team, organizing technical events, workshops, and competitions over a full year.',
+      'Grew participation and engagement across the student developer community on campus.',
+      'Mentored juniors and connected members with industry opportunities and learning resources.',
+      'Owned planning, delegation, and on-the-day execution for society initiatives end to end.',
+    ],
+    stack: ['Leadership', 'Event Management', 'Public Speaking', 'Team Building', 'Community'],
+  },
 ];
 
 /* ---------------------------------------------------------------------------

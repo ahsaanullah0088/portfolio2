@@ -1,6 +1,7 @@
 'use client';
 
 /* eslint-disable @next/next/no-img-element */
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { SpotlightCard } from '@/components/ui/SpotlightCard';
@@ -54,18 +55,8 @@ export function GitHubStats() {
               href={social.github}
             />
             <div className="mt-4 grid items-center gap-4 sm:grid-cols-[1.4fr_1fr]">
-              <img
-                src={statsUrl}
-                alt={`${user} GitHub statistics`}
-                loading="lazy"
-                className="w-full"
-              />
-              <img
-                src={langsUrl}
-                alt={`${user} most used languages`}
-                loading="lazy"
-                className="w-full"
-              />
+              <StatImage src={statsUrl} alt={`${user} GitHub statistics`} label="GitHub stats" />
+              <StatImage src={langsUrl} alt={`${user} most used languages`} label="Top languages" />
             </div>
           </SpotlightCard>
         </motion.div>
@@ -75,12 +66,7 @@ export function GitHubStats() {
           <SpotlightCard className="flex h-full flex-col p-5 sm:p-6">
             <CardHeader icon={<Code className="h-4 w-4" />} title="Contribution Streak" />
             <div className="grid flex-1 place-items-center py-2">
-              <img
-                src={streakUrl}
-                alt={`${user} contribution streak`}
-                loading="lazy"
-                className="w-full"
-              />
+              <StatImage src={streakUrl} alt={`${user} contribution streak`} label="Streak stats" />
             </div>
           </SpotlightCard>
         </motion.div>
@@ -94,10 +80,10 @@ export function GitHubStats() {
               href={social.github}
             />
             <div className="mt-5 overflow-x-auto no-scrollbar">
-              <img
+              <StatImage
                 src={chartUrl}
                 alt={`${user} contribution graph`}
-                loading="lazy"
+                label="Contribution graph"
                 className="min-w-[560px]"
               />
             </div>
@@ -182,6 +168,59 @@ export function GitHubStats() {
         </ButtonLink>
       </div>
     </Section>
+  );
+}
+
+/**
+ * Loads a third-party stat image (github-readme-stats / streak / ghchart).
+ * These public services are rate-limited and occasionally fail — on error we
+ * retry once with a cache-buster, then show a clean fallback tile instead of a
+ * broken image.
+ */
+function StatImage({
+  src,
+  alt,
+  label,
+  className,
+}: {
+  src: string;
+  alt: string;
+  label: string;
+  className?: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+
+  if (failed) {
+    return (
+      <a
+        href={social.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`flex min-h-[120px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[rgb(var(--border)/0.14)] bg-[rgb(var(--surface)/0.02)] p-5 text-center transition-colors hover:border-brand-500/30 ${className ?? ''}`}
+      >
+        <GitHub className="h-5 w-5 text-brand-300" />
+        <span className="text-xs text-muted">
+          {label} unavailable right now — view live on GitHub
+        </span>
+        <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-300">
+          @{user} <ArrowUpRight className="h-3 w-3" />
+        </span>
+      </a>
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      key={attempt}
+      src={attempt === 0 ? src : `${src}${src.includes('?') ? '&' : '?'}r=${attempt}`}
+      alt={alt}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      className={`w-full ${className ?? ''}`}
+      onError={() => (attempt < 1 ? setAttempt((a) => a + 1) : setFailed(true))}
+    />
   );
 }
 
