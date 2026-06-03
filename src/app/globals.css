@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Design tokens — Aurora / Spotlight system
+   Dark-first; light theme overrides under :root (no .dark)
+   ============================================================ */
+@layer base {
+  :root {
+    /* Light theme */
+    --bg: 250 250 252;
+    --bg-elevated: 255 255 255;
+    --surface: 255 255 255;
+    --border: 17 17 27;
+    --text: 14 14 21;
+    --text-muted: 82 82 102;
+    --accent: 92 60 230;
+    --selection: 124 92 255;
+  }
+
+  .dark {
+    /* Dark theme (default presentation) */
+    --bg: 6 6 10;
+    --bg-elevated: 14 14 21;
+    --surface: 255 255 255;
+    --border: 255 255 255;
+    --text: 244 244 248;
+    --text-muted: 161 161 180;
+    --accent: 124 92 255;
+    --selection: 124 92 255;
+  }
+
+  * {
+    border-color: rgb(var(--border) / 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    background-color: rgb(var(--bg));
+    color: rgb(var(--text));
+    font-feature-settings: 'ss01', 'cv01', 'cv11';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgb(var(--selection) / 0.3);
+    color: rgb(var(--text));
+  }
+
+  /* Focus visibility for a11y */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--border) / 0.14);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--accent) / 0.5);
+    background-clip: content-box;
+  }
+}
+
+@layer components {
+  /* Muted text helper bound to theme token */
+  .text-muted {
+    color: rgb(var(--text-muted));
+  }
+
+  /* Glass surface */
+  .glass {
+    background: rgb(var(--surface) / 0.04);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgb(var(--border) / 0.08);
+  }
+  .dark .glass {
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(110deg, #a5a9ff 0%, #7c5cff 45%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Animated shimmer gradient text for hero */
+  .text-shimmer {
+    background: linear-gradient(
+      110deg,
+      rgb(var(--text)) 20%,
+      #7c5cff 40%,
+      #22d3ee 55%,
+      rgb(var(--text)) 75%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 6s linear infinite;
+  }
+
+  /* Section label / eyebrow */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-muted;
+  }
+
+  /* Hairline divider */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgb(var(--border) / 0.14),
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: var(--tw-bg-grid, theme('backgroundImage.grid-dark'));
+    background-size: 56px 56px;
+  }
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+  .mask-fade-x {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
