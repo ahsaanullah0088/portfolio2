@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 import { profile } from '@/data/profile';
 
 export const runtime = 'nodejs';
@@ -37,27 +38,31 @@ export async function POST(req: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
 
-  // If an email provider is configured, deliver the message. Otherwise we still
-  // return success and the client falls back to a prefilled mailto link.
+  // If an email provider is configured, deliver the message via Resend.
+  // Otherwise we still return success and the client falls back to a prefilled
+  // mailto link.
   if (apiKey) {
     try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: process.env.CONTACT_FROM ?? 'Portfolio <onboarding@resend.dev>',
-          to: [process.env.CONTACT_TO ?? profile.email],
-          reply_to: email,
-          subject: `New portfolio message from ${name}`,
-          text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
-        }),
+      const resend = new Resend(apiKey);
+      const { data, error } = await resend.emails.send({
+        from: process.env.CONTACT_FROM ?? 'Portfolio <onboarding@resend.dev>',
+        to: [process.env.CONTACT_TO ?? profile.email],
+        replyTo: email,
+        subject: `New portfolio message from ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
       });
-      if (!res.ok) throw new Error(`Provider responded ${res.status}`);
-      return NextResponse.json({ ok: true });
-    } catch {
+
+      if (error) {
+        console.error('[contact] Resend error:', error);
+        return NextResponse.json(
+          { ok: false, error: 'Could not send right now. Please email me directly.' },
+          { status: 502 }
+        );
+      }
+
+      return NextResponse.json({ ok: true, id: data?.id });
+    } catch (err) {
+      console.error('[contact] Unexpected send failure:', err);
       return NextResponse.json(
         { ok: false, error: 'Could not send right now. Please email me directly.' },
         { status: 502 }
