@@ -47,7 +47,7 @@ export const social = {
   // TODO: add your LeetCode username to enable the live link
   leetcode: 'https://leetcode.com/u/ahsaanullah0088/',
   leetcodeUser: 'ahsaanullah0088',
-  portfolio: 'https://ahsaanullah.netlify.app/',
+  portfolio: 'https://portfolio2-omega-steel.vercel.app/',
   email: 'mailto:ahsaanu70@gmail.com',
 } as const;
 

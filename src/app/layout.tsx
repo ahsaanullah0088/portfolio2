@@ -26,7 +26,7 @@ const mono = JetBrains_Mono({
   display: 'swap',
 });
 
-const siteUrl = 'https://ahsaanullah.netlify.app';
+const siteUrl = 'https://portfolio2-omega-steel.vercel.app';
 const description = `${profile.name} — ${profile.role} building fast, AI-powered web apps with React, Next.js, Node and TypeScript. Currently engineering the AI construction OS at Sledge.`;
 
 export const metadata: Metadata = {

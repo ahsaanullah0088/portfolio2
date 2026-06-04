@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const siteUrl = 'https://ahsaanullah.netlify.app';
+const siteUrl = 'https://portfolio2-omega-steel.vercel.app';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
