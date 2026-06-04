@@ -47,7 +47,7 @@ export function GitHubStats() {
         className="grid gap-4 lg:grid-cols-3"
       >
         {/* GitHub stats */}
-        <motion.div variants={fadeUp} className="lg:col-span-2">
+        <motion.div variants={fadeUp} className="min-w-0 lg:col-span-2">
           <SpotlightCard className="h-full p-5 sm:p-6">
             <CardHeader
               icon={<GitHub className="h-4 w-4" />}
@@ -62,7 +62,7 @@ export function GitHubStats() {
         </motion.div>
 
         {/* Streak */}
-        <motion.div variants={fadeUp}>
+        <motion.div variants={fadeUp} className="min-w-0">
           <SpotlightCard className="flex h-full flex-col p-5 sm:p-6">
             <CardHeader icon={<Code className="h-4 w-4" />} title="Contribution Streak" />
             <div className="grid flex-1 place-items-center py-2">
@@ -72,14 +72,14 @@ export function GitHubStats() {
         </motion.div>
 
         {/* Contribution graph */}
-        <motion.div variants={fadeUp} className="lg:col-span-2">
+        <motion.div variants={fadeUp} className="min-w-0 lg:col-span-2">
           <SpotlightCard className="h-full p-5 sm:p-6">
             <CardHeader
               icon={<GitHub className="h-4 w-4" />}
               title="Contribution Graph"
               href={social.github}
             />
-            <div className="mt-5 overflow-x-auto no-scrollbar">
+            <div className="mt-5 min-w-0 overflow-x-auto no-scrollbar">
               <StatImage
                 src={chartUrl}
                 alt={`${user} contribution graph`}
@@ -91,7 +91,7 @@ export function GitHubStats() {
         </motion.div>
 
         {/* LeetCode */}
-        <motion.div variants={fadeUp}>
+        <motion.div variants={fadeUp} className="min-w-0">
           <SpotlightCard className="flex h-full flex-col p-5 sm:p-6">
             <CardHeader
               icon={<LeetCode className="h-4 w-4" />}
