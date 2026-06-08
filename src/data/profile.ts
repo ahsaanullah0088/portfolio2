@@ -122,10 +122,10 @@ export const experience: Experience[] = [
     location: 'Remote',
     mode: 'Remote',
     summary:
-      'Building and improving production web apps across client products — shipping new features, performance gains, and polished, accessible interfaces.',
+      'Building and improving production web & mobile apps across client products — shipping new features, performance gains, and polished, accessible interfaces.',
     bullets: [
       'Sledge (AI construction OS): implemented the AI document parser and automatic contract & project generation, cutting manual office work from hours to minutes.',
-      'Visume (video résumé platform): implemented new features and a responsive, accessible UI that improved how candidates record video résumés and how employers review them.',
+      'Visume (video-résumé hiring platform, AU market): built web & React Native mobile features — video profiles, AI mock interviews (OpenAI), Stripe subscriptions and in-app chat across candidate & employer flows.',
       'Caleo: improved the company web platform with a faster, polished, multilingual interface and reusable components.',
       'Across projects: optimized rendering and bundle size, integrated REST APIs, and shipped reliable, maintainable front-end code.',
     ],
@@ -177,7 +177,7 @@ export const skillGroups: SkillGroup[] = [
   {
     category: 'Frontend',
     icon: 'layout',
-    skills: ['React', 'Next.js', 'TypeScript', 'Redux Toolkit', 'Tailwind CSS', 'Material UI', 'Framer Motion', 'HTML5', 'CSS3'],
+    skills: ['React', 'React Native', 'Next.js', 'TypeScript', 'Redux Toolkit', 'Tailwind CSS', 'Material UI', 'Framer Motion', 'HTML5', 'CSS3'],
   },
   {
     category: 'Backend',
@@ -249,20 +249,20 @@ export const projects: Project[] = [
   },
   {
     slug: 'visume',
-    name: 'Visume — Video Résumé Platform',
-    tagline: 'Video résumés that connect candidates & employers',
+    name: 'Visume — Video Résumé Hiring Platform',
+    tagline: 'Two-sided video-résumé marketplace for the AU job market',
     problem:
-      'Text CVs don’t show personality or communication skills. Visume lets candidates record video résumés so they stand out — and helps employers assess fit faster.',
+      'Paper CVs hide personality, and hiring overseas talent in Australia means strict visa & Labour Market Testing rules. Visume lets candidates pitch themselves with video “visumes” while giving employers a compliant way to post vacancies and discover talent — on web and mobile.',
     features: [
-      'Implemented responsive, accessible UI for recording, uploading & browsing video résumés',
-      'Built and improved candidate and employer flows — profiles, job posts & applications',
-      'Optimized media-heavy pages for faster load and smoother video playback',
-      'Integrated REST APIs with clean, reusable React components',
+      'Built candidate & employer flows with video profiles, CVs and visa-eligibility docs (407/482/494)',
+      'Implemented AI mock interviews (OpenAI) — spoken questions, audio transcription & response scoring',
+      'Worked on vacancy posting with Australian Labour Market Testing (LMT) compliance',
+      'Integrated Stripe subscriptions + in-app purchases, in-app chat and interview scheduling',
     ],
-    stack: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'REST APIs'],
+    stack: ['React Native', 'React', 'Ruby on Rails', 'PostgreSQL', 'OpenAI', 'Stripe'],
     metrics: [
-      { label: 'Focus', value: 'Video CVs' },
-      { label: 'Status', value: 'Live' },
+      { label: 'Platforms', value: 'Web + iOS/Android' },
+      { label: 'User roles', value: '3' },
     ],
     liveUrl: 'https://www.visumejobs.com/',
     accent: 'cyan',
