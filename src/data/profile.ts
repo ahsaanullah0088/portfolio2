@@ -125,7 +125,7 @@ export const experience: Experience[] = [
       'Building and improving production web apps across client products — shipping new features, performance gains, and polished, accessible interfaces.',
     bullets: [
       'Sledge (AI construction OS): implemented the AI document parser and automatic contract & project generation, cutting manual office work from hours to minutes.',
-      'Visume (jobs platform): implemented new features and a responsive, accessible UI that improved the experience for candidates and employers.',
+      'Visume (video résumé platform): implemented new features and a responsive, accessible UI that improved how candidates record video résumés and how employers review them.',
       'Caleo: improved the company web platform with a faster, polished, multilingual interface and reusable components.',
       'Across projects: optimized rendering and bundle size, integrated REST APIs, and shipped reliable, maintainable front-end code.',
     ],
@@ -249,19 +249,19 @@ export const projects: Project[] = [
   },
   {
     slug: 'visume',
-    name: 'Visume — Jobs Platform',
-    tagline: 'Recruitment platform connecting talent & employers',
+    name: 'Visume — Video Résumé Platform',
+    tagline: 'Video résumés that connect candidates & employers',
     problem:
-      'An online jobs platform needs fast, intuitive flows for candidates to apply and for employers to post and manage roles — across every screen size.',
+      'Text CVs don’t show personality or communication skills. Visume lets candidates record video résumés so they stand out — and helps employers assess fit faster.',
     features: [
-      'Implemented new, responsive, accessible UI across candidate & employer flows',
-      'Improved job listing, search and application experiences',
-      'Optimized performance and page load for smoother interactions',
+      'Implemented responsive, accessible UI for recording, uploading & browsing video résumés',
+      'Built and improved candidate and employer flows — profiles, job posts & applications',
+      'Optimized media-heavy pages for faster load and smoother video playback',
       'Integrated REST APIs with clean, reusable React components',
     ],
     stack: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'REST APIs'],
     metrics: [
-      { label: 'Role', value: 'Frontend' },
+      { label: 'Focus', value: 'Video CVs' },
       { label: 'Status', value: 'Live' },
     ],
     liveUrl: 'https://www.visumejobs.com/',
