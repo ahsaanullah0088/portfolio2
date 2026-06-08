@@ -15,7 +15,7 @@ export const profile = {
   headline: 'I build fast, AI-powered products for the web.',
   /** Sub-headline / positioning statement */
   tagline:
-    'Software Engineer specializing in full-stack web apps, real-time systems, and AI automation — currently building the AI construction OS at Sledge.',
+    'Software Engineer specializing in full-stack web apps, real-time systems, and AI automation — from multi-vendor marketplaces to the Sledge AI construction OS.',
   /** One-liner shown under the avatar / in compact spots */
   shortBio:
     'Full-stack engineer (React, Next.js, Node) shipping production software end to end.',
@@ -67,7 +67,7 @@ export const stats: { label: string; value: string; suffix?: string }[] = [
 export const about = {
   paragraphs: [
     'I’m a results-driven software engineer who loves turning ambiguous problems into clean, fast, production-grade products. I work across the stack — crafting polished React/Next.js interfaces, designing resilient Node APIs, and wiring up real-time and AI-powered workflows.',
-    'Today I’m a Software Engineer at Sledge, an AI operating system for the construction industry, where I build the AI document parser, backend services, and automated contract & project generation that replace hours of manual office work.',
+    'Recently I built Sledge, an AI operating system for the construction industry — engineering the AI document parser, backend services, and automated contract & project generation that replace hours of manual office work.',
     'Along the way I’ve shipped multi-vendor e-commerce and healthcare platforms, mentored bootcamp developers, led a Microsoft student community chapter, and earned recognition as an MLSA Alpha Ambassador and Headstarter SWE Fellow.',
   ],
   highlights: [
@@ -113,41 +113,23 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    company: 'Sledge',
-    role: 'Software Engineer',
-    start: 'Jan 2026',
-    end: 'Present',
-    current: true,
-    location: 'Remote',
-    mode: 'Remote',
-    href: 'https://getsledge.com',
-    summary:
-      'Building the AI construction operating system — the platform that unifies project management, contracts, and accounting for construction businesses.',
-    bullets: [
-      'Engineer the AI document parser that ingests construction paperwork and auto-extracts line items, costs, and project data into structured records.',
-      'Build backend services and APIs powering automatic contract creation and project generation, cutting manual office work from hours to minutes.',
-      'Implement review-and-approve workflows that sync AI-organized data to accounting before it lands, keeping humans in control.',
-      'Ship and maintain core website/backend features with a focus on reliability, performance, and clean, maintainable architecture.',
-    ],
-    stack: ['Next.js', 'TypeScript', 'Node.js', 'AI / LLM Parsing', 'PostgreSQL', 'REST APIs'],
-  },
-  {
     company: 'Code Linx',
     role: 'Associate Software Engineer',
     // TODO: adjust dates if needed
     start: 'Sep 2025',
-    end: 'Dec 2025',
+    end: 'Present',
+    current: true,
     location: 'Remote',
     mode: 'Remote',
     summary:
-      'Frontend-focused engineering — translating design into pixel-accurate, responsive, production interfaces.',
+      'Building and improving production web apps across client products — shipping new features, performance gains, and polished, accessible interfaces.',
     bullets: [
-      'Converted Figma designs into clean, responsive React components with high visual fidelity.',
-      'Built reusable, accessible UI primitives and component libraries to speed up delivery.',
-      'Collaborated with designers and backend engineers to integrate APIs and ship features.',
-      'Optimized rendering and bundle size for fast, smooth user experiences.',
+      'Sledge (AI construction OS): implemented the AI document parser and automatic contract & project generation, cutting manual office work from hours to minutes.',
+      'Visume (jobs platform): implemented new features and a responsive, accessible UI that improved the experience for candidates and employers.',
+      'Caleo: improved the company web platform with a faster, polished, multilingual interface and reusable components.',
+      'Across projects: optimized rendering and bundle size, integrated REST APIs, and shipped reliable, maintainable front-end code.',
     ],
-    stack: ['React', 'TypeScript', 'Tailwind CSS', 'Figma', 'Material UI', 'REST APIs'],
+    stack: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'REST APIs'],
   },
   {
     company: 'Infini Studio',
@@ -263,6 +245,48 @@ export const projects: Project[] = [
     ],
     liveUrl: 'https://getsledge.com',
     accent: 'violet',
+    featured: true,
+  },
+  {
+    slug: 'visume',
+    name: 'Visume — Jobs Platform',
+    tagline: 'Recruitment platform connecting talent & employers',
+    problem:
+      'An online jobs platform needs fast, intuitive flows for candidates to apply and for employers to post and manage roles — across every screen size.',
+    features: [
+      'Implemented new, responsive, accessible UI across candidate & employer flows',
+      'Improved job listing, search and application experiences',
+      'Optimized performance and page load for smoother interactions',
+      'Integrated REST APIs with clean, reusable React components',
+    ],
+    stack: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'REST APIs'],
+    metrics: [
+      { label: 'Role', value: 'Frontend' },
+      { label: 'Status', value: 'Live' },
+    ],
+    liveUrl: 'https://www.visumejobs.com/',
+    accent: 'cyan',
+    featured: true,
+  },
+  {
+    slug: 'caleo',
+    name: 'Caleo — Enterprise Consulting Site',
+    tagline: 'Web platform for an SAP finance & consolidation firm',
+    problem:
+      'A leading SAP finance consultancy needed a fast, polished, multilingual web presence to showcase services and convert enterprise clients.',
+    features: [
+      'Implemented a clean, responsive, multilingual interface',
+      'Improved performance and load times for a smoother experience',
+      'Built reusable, accessible UI components and page sections',
+      'Refined an SEO-friendly structure and content layout',
+    ],
+    stack: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
+    metrics: [
+      { label: 'i18n', value: 'Multi-lang' },
+      { label: 'Status', value: 'Live' },
+    ],
+    liveUrl: 'https://caleo.com/en/',
+    accent: 'emerald',
     featured: true,
   },
   {

@@ -156,7 +156,7 @@ export function Hero() {
 
             {/* floating chips */}
             <FloatingChip className="left-[-6%] top-[22%]" delay={0.6}>
-              <Sparkles className="h-3.5 w-3.5 text-brand-400" /> AI Parser @ Sledge
+              <Sparkles className="h-3.5 w-3.5 text-brand-400" /> Built Sledge AI Parser
             </FloatingChip>
             <FloatingChip className="right-[-8%] top-[14%]" delay={0.8}>
               ⚡ Next.js + TS

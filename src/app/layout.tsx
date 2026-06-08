@@ -27,7 +27,7 @@ const mono = JetBrains_Mono({
 });
 
 const siteUrl = 'https://portfolio2-omega-steel.vercel.app';
-const description = `${profile.name} — ${profile.role} building fast, AI-powered web apps with React, Next.js, Node and TypeScript. Currently engineering the AI construction OS at Sledge.`;
+const description = `${profile.name} — ${profile.role} building fast, AI-powered web apps with React, Next.js, Node and TypeScript. Builder of the Sledge AI construction OS.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -104,7 +104,7 @@ const jsonLd = {
     addressLocality: 'Lahore',
     addressCountry: 'PK',
   },
-  worksFor: { '@type': 'Organization', name: 'Sledge', url: 'https://getsledge.com' },
+  worksFor: { '@type': 'Organization', name: 'Code Linx' },
   sameAs: [social.github, social.linkedin, social.fiverr],
   knowsAbout: [
     'React',

@@ -25,7 +25,7 @@ export function Footer() {
               </span>
             </a>
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              {profile.shortBio} Currently building the AI construction OS at Sledge.
+              {profile.shortBio} Builder of the Sledge AI construction OS.
             </p>
             <p className="mt-4 inline-flex items-center gap-2 text-sm text-muted">
               <span className="relative flex h-2 w-2">
