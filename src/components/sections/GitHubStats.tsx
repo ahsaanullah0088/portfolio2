@@ -1,7 +1,7 @@
 'use client';
 
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { SpotlightCard } from '@/components/ui/SpotlightCard';
@@ -19,12 +19,6 @@ const statsUrl = `https://github-readme-stats.vercel.app/api?username=${user}&sh
 const langsUrl = `https://github-readme-stats.vercel.app/api/top-langs/?username=${user}&layout=compact&langs_count=8&${theme}`;
 const streakUrl = `https://github-readme-streak-stats.herokuapp.com/?user=${user}&hide_border=true&background=00000000&stroke=8B86FF&ring=22D3EE&fire=22D3EE&currStreakLabel=8B86FF&sideLabels=a1a1b4&dates=6b6b80&currStreakNum=f4f4f8&sideNums=f4f4f8`;
 const chartUrl = `https://ghchart.rshah.org/7C5CFF/${user}`;
-
-const leetStats = [
-  { label: 'Easy', value: coding.leetcode.easy, total: coding.leetcode.solved, color: 'bg-emerald-400' },
-  { label: 'Medium', value: coding.leetcode.medium, total: coding.leetcode.solved, color: 'bg-amber-400' },
-  { label: 'Hard', value: coding.leetcode.hard, total: coding.leetcode.solved, color: 'bg-rose-400' },
-];
 
 export function GitHubStats() {
   return (
@@ -92,42 +86,7 @@ export function GitHubStats() {
 
         {/* LeetCode */}
         <motion.div variants={fadeUp} className="min-w-0">
-          <SpotlightCard className="flex h-full flex-col p-5 sm:p-6">
-            <CardHeader
-              icon={<LeetCode className="h-4 w-4" />}
-              title="LeetCode"
-              href={social.leetcode}
-            />
-            <div className="mt-4 flex items-baseline gap-2">
-              <span className="font-display text-4xl font-bold text-gradient">
-                {coding.leetcode.solved}+
-              </span>
-              <span className="text-sm text-muted">problems solved</span>
-            </div>
-            <span className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-500/10 px-2.5 py-0.5 text-xs font-medium text-brand-300">
-              {coding.leetcode.rank}
-            </span>
-
-            <div className="mt-5 space-y-3">
-              {leetStats.map((s) => (
-                <div key={s.label}>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted">{s.label}</span>
-                    <span className="font-medium text-[rgb(var(--text))]">{s.value}</span>
-                  </div>
-                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[rgb(var(--surface)/0.06)]">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${Math.min((s.value / s.total) * 100, 100)}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                      className={`h-full rounded-full ${s.color}`}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </SpotlightCard>
+          <LeetCodeCard />
         </motion.div>
       </motion.div>
 
@@ -221,6 +180,82 @@ function StatImage({
       className={`w-full ${className ?? ''}`}
       onError={() => (attempt < 1 ? setAttempt((a) => a + 1) : setFailed(true))}
     />
+  );
+}
+
+type LeetStats = { solved: number; easy: number; medium: number; hard: number; rank: string };
+
+/**
+ * LeetCode card — shows the real baseline from profile data and refreshes it
+ * live from the public LeetCode API on mount (falls back silently if the API
+ * is asleep/unreachable).
+ */
+function LeetCodeCard() {
+  const [lc, setLc] = useState<LeetStats>(coding.leetcode);
+
+  useEffect(() => {
+    let active = true;
+    const ctrl = new AbortController();
+    fetch(`https://alfa-leetcode-api.onrender.com/userProfile/${social.leetcodeUser}`, {
+      signal: ctrl.signal,
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        if (!active || typeof d?.totalSolved !== 'number') return;
+        setLc({
+          solved: d.totalSolved,
+          easy: d.easySolved ?? coding.leetcode.easy,
+          medium: d.mediumSolved ?? coding.leetcode.medium,
+          hard: d.hardSolved ?? coding.leetcode.hard,
+          rank: d.ranking ? `Rank #${Number(d.ranking).toLocaleString()}` : coding.leetcode.rank,
+        });
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+      ctrl.abort();
+    };
+  }, []);
+
+  const bars = [
+    { label: 'Easy', value: lc.easy, color: 'bg-emerald-400' },
+    { label: 'Medium', value: lc.medium, color: 'bg-amber-400' },
+    { label: 'Hard', value: lc.hard, color: 'bg-rose-400' },
+  ];
+
+  return (
+    <SpotlightCard className="flex h-full flex-col p-5 sm:p-6">
+      <CardHeader icon={<LeetCode className="h-4 w-4" />} title="LeetCode" href={social.leetcode} />
+      <div className="mt-4 flex items-baseline gap-2">
+        <span className="font-display text-4xl font-bold text-gradient">{lc.solved}</span>
+        <span className="text-sm text-muted">problems solved</span>
+      </div>
+      <span className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-500/10 px-2.5 py-0.5 text-xs font-medium text-brand-300">
+        {lc.rank}
+      </span>
+
+      <div className="mt-5 space-y-3">
+        {bars.map((s) => (
+          <div key={s.label}>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted">{s.label}</span>
+              <span className="font-medium text-[rgb(var(--text))]">{s.value}</span>
+            </div>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[rgb(var(--surface)/0.06)]">
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{
+                  width: `${Math.min((s.value / Math.max(lc.solved, 1)) * 100, 100)}%`,
+                }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                className={`h-full rounded-full ${s.color}`}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </SpotlightCard>
   );
 }
 

@@ -339,13 +339,13 @@ export const projects: Project[] = [
  *  CODING / GITHUB — live stat image URLs use the GitHub username above.
  * ------------------------------------------------------------------------- */
 export const coding = {
-  // TODO: update these LeetCode numbers (or remove the card) once confirmed.
+  // Real baseline (auto-refreshes live in the UI from the LeetCode API).
   leetcode: {
-    solved: 120,
-    easy: 70,
-    medium: 42,
-    hard: 8,
-    rank: 'Top 25%',
+    solved: 156,
+    easy: 89,
+    medium: 63,
+    hard: 4,
+    rank: 'Rank #1,026,401',
   },
   journey: [
     'Started with C++ and data structures, fell for the web, and never looked back.',
