@@ -190,21 +190,6 @@ export function Contact() {
               </div>
             ) : (
               <form onSubmit={onSubmit} className="space-y-4" noValidate>
-                {/* Honeypot — hidden from humans; bots that fill it are dropped.
-                    Named neutrally (not "company"/"email"/etc.) so browser
-                    autofill / password managers won't touch it. */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden opacity-0"
-                >
-                  <input
-                    type="text"
-                    name="hp_field"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    defaultValue=""
-                  />
-                </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Name" htmlFor="name">
