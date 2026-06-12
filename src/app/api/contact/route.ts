@@ -11,7 +11,7 @@ type Payload = {
   email?: string;
   message?: string;
   // honeypot — bots fill this; humans never see it.
-  company?: string;
+  hp_field?: string;
 };
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   const message = body.message?.trim() ?? '';
 
   // Honeypot: silently accept to avoid tipping off bots.
-  if (body.company) return NextResponse.json({ ok: true });
+  if (body.hp_field) return NextResponse.json({ ok: true });
 
   if (name.length < 2 || !emailRe.test(email) || message.length < 10) {
     return NextResponse.json(
