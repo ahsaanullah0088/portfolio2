@@ -1,6 +1,7 @@
 import { Container } from '@/components/ui/Container';
 import { navLinks, profile, social } from '@/data/profile';
 import { GitHub, LinkedIn, Fiverr, Mail } from '@/components/ui/Icons';
+import { ViewCounter } from './ViewCounter';
 
 const socials = [
   { label: 'GitHub', href: social.github, Icon: GitHub },
@@ -96,9 +97,12 @@ export function Footer() {
         <div className="mt-12 hairline" />
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-xs text-muted">
-            © {new Date().getFullYear()} {profile.name}. Designed & built with care.
-          </p>
+          <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
+            <p className="text-xs text-muted">
+              © {new Date().getFullYear()} {profile.name}. Designed & built with care.
+            </p>
+            <ViewCounter />
+          </div>
           <div className="flex items-center gap-2">
             {socials.map(({ label, href, Icon }) => (
               <a
