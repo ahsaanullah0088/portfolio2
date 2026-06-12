@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 import { profile } from '@/data/profile';
+import { redisCommand } from '@/lib/redis';
 
 export const runtime = 'nodejs';
 
@@ -13,6 +15,7 @@ type Payload = {
 };
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MESSAGES_KEY = 'contact:messages';
 
 export async function POST(req: Request) {
   let body: Payload;
@@ -36,40 +39,64 @@ export async function POST(req: Request) {
     );
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  // 1) Persist to your own DB (Upstash Redis) — best-effort, never lost.
+  let stored = false;
+  const record = JSON.stringify({ name, email, message, at: new Date().toISOString() });
+  const pushed = await redisCommand<number>(['LPUSH', MESSAGES_KEY, record]);
+  if (pushed !== null) {
+    stored = true;
+    // Keep only the most recent 200 messages.
+    await redisCommand(['LTRIM', MESSAGES_KEY, '0', '199']);
+  }
 
-  // If an email provider is configured, deliver the message via Resend.
-  // Otherwise we still return success and the client falls back to a prefilled
-  // mailto link.
-  if (apiKey) {
+  // 2) Notify by email: Gmail (preferred) → Resend → mailto fallback.
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+  const to = process.env.CONTACT_TO ?? profile.email;
+  const subject = `New portfolio message from ${name}`;
+  const text = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+
+  if (gmailUser && gmailPass) {
     try {
-      const resend = new Resend(apiKey);
-      const { data, error } = await resend.emails.send({
-        from: process.env.CONTACT_FROM ?? 'Portfolio <onboarding@resend.dev>',
-        to: [process.env.CONTACT_TO ?? profile.email],
-        replyTo: email,
-        subject: `New portfolio message from ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: gmailUser, pass: gmailPass },
       });
-
-      if (error) {
-        console.error('[contact] Resend error:', error);
-        return NextResponse.json(
-          { ok: false, error: 'Could not send right now. Please email me directly.' },
-          { status: 502 }
-        );
-      }
-
-      return NextResponse.json({ ok: true, id: data?.id });
+      await transporter.sendMail({
+        from: `"Portfolio Contact" <${gmailUser}>`,
+        to,
+        replyTo: email,
+        subject,
+        text,
+      });
+      return NextResponse.json({ ok: true, via: 'gmail', stored });
     } catch (err) {
-      console.error('[contact] Unexpected send failure:', err);
-      return NextResponse.json(
-        { ok: false, error: 'Could not send right now. Please email me directly.' },
-        { status: 502 }
-      );
+      console.error('[contact] Gmail send failed:', err);
+      // fall through — message is still saved in Redis (if stored)
     }
   }
 
-  // No provider configured — tell the client to use the mailto fallback.
+  const resendKey = process.env.RESEND_API_KEY;
+  if (resendKey) {
+    try {
+      const resend = new Resend(resendKey);
+      const { data, error } = await resend.emails.send({
+        from: process.env.CONTACT_FROM ?? 'Portfolio <onboarding@resend.dev>',
+        to: [to],
+        replyTo: email,
+        subject,
+        text,
+      });
+      if (!error) return NextResponse.json({ ok: true, via: 'resend', id: data?.id, stored });
+      console.error('[contact] Resend error:', error);
+    } catch (err) {
+      console.error('[contact] Resend send failed:', err);
+    }
+  }
+
+  // No email delivered. If we at least saved it, that's a success.
+  if (stored) return NextResponse.json({ ok: true, via: 'stored', stored: true });
+
+  // Nothing configured at all — let the client open a prefilled mailto.
   return NextResponse.json({ ok: true, fallback: true });
 }
