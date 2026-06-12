@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
-import { redisCommand } from '@/lib/redis';
+import { getMessages } from '@/lib/contactStore';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-
-const MESSAGES_KEY = 'contact:messages';
-
-type Message = { name: string; email: string; message: string; at: string };
 
 /**
  * Returns stored contact messages — protected by INBOX_SECRET.
@@ -31,16 +27,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ ok: false, error: 'Unauthorized.' }, { status: 401 });
   }
 
-  const raw = (await redisCommand<string[]>(['LRANGE', MESSAGES_KEY, '0', '199'])) ?? [];
-  const messages = raw
-    .map((s) => {
-      try {
-        return JSON.parse(s) as Message;
-      } catch {
-        return null;
-      }
-    })
-    .filter((m): m is Message => m !== null);
-
+  const messages = await getMessages();
   return NextResponse.json({ ok: true, count: messages.length, messages });
 }

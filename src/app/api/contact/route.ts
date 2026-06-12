@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 import { profile } from '@/data/profile';
-import { redisCommand } from '@/lib/redis';
+import { saveMessage } from '@/lib/contactStore';
 
 export const runtime = 'nodejs';
 
@@ -15,7 +15,6 @@ type Payload = {
 };
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MESSAGES_KEY = 'contact:messages';
 
 export async function POST(req: Request) {
   let body: Payload;
@@ -39,15 +38,13 @@ export async function POST(req: Request) {
     );
   }
 
-  // 1) Persist to your own DB (Upstash Redis) — best-effort, never lost.
-  let stored = false;
-  const record = JSON.stringify({ name, email, message, at: new Date().toISOString() });
-  const pushed = await redisCommand<number>(['LPUSH', MESSAGES_KEY, record]);
-  if (pushed !== null) {
-    stored = true;
-    // Keep only the most recent 200 messages.
-    await redisCommand(['LTRIM', MESSAGES_KEY, '0', '199']);
-  }
+  // 1) Persist to your own DB (MongoDB, or Redis fallback) — never lost.
+  const stored = await saveMessage({
+    name,
+    email,
+    message,
+    at: new Date().toISOString(),
+  });
 
   // 2) Notify by email: Gmail (preferred) → Resend → mailto fallback.
   const gmailUser = process.env.GMAIL_USER;
